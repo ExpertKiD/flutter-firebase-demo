@@ -14,7 +14,7 @@ bool isDebugMode() {
   return isInDebugMode;
 }
 
-final _logger = Logger();
+final logger = Logger();
 final _sentry = SentryClient(SentryOptions(
     dsn:
         'https://a27d08e9edf5482c89aa076073be65b7@o1087080.ingest.sentry.io/6104827'));
@@ -27,17 +27,17 @@ void main() {
     FlutterError.onError = (FlutterErrorDetails details) async {
       if (isDebugMode()) {
         // defaults to dump to console
-        FlutterError.dumpErrorToConsole(details);
+        // FlutterError.dumpErrorToConsole(details);
 
         //or, use logger to dump pretty
-        _logger.e(details.toString(), details.exception, details.stack);
+        logger.e(details.toString(), details.exception, details.stack);
       } else {
-        _logger.d('Sending error details to Zone');
+        logger.d('Sending error details to Zone');
         FlutterError.dumpErrorToConsole(details);
 
         if (details.stack != null) {
-          _logger.e('Production error: ' + details.toString(),
-              details.exception, details.stack);
+          logger.e('Production error: ' + details.toString(), details.exception,
+              details.stack);
           Zone.current.handleUncaughtError(details.exception, details.stack!);
         }
       }
@@ -47,9 +47,9 @@ void main() {
     runApp(const FirebaseDemoApp());
   }, (error, stack) async {
     if (isDebugMode()) {
-      _logger.e("Caught Dart Error!", error, stack);
+      logger.e("Caught Dart Error!", error, stack);
     } else {
-      _logger.d("Time to report to error tracking system in production");
+      logger.d("Time to report to error tracking system in production");
       final SentryEvent event = await getSentryEnvEvent(error);
 
       _sentry.captureEvent(event, stackTrace: stack);
