@@ -43,8 +43,11 @@ dependencies:
   json_annotation: ^4.4.0
   firebase_core: ^1.11.0
   firebase_auth: ^3.3.5
+  flutterfire_ui: ^0.3.1
   hive: ^2.0.5
   flutter_riverpod: ^1.0.3
+
+
 
 dev_dependencies:
   flutter_test:
