@@ -1,6 +1,7 @@
 import 'dart:async';
 
-import 'package:firebasedemo/utils/sesntry_event.dart';
+import 'package:firebasedemo/utils/app_configs.dart';
+import 'package:firebasedemo/utils/sentry_event.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
@@ -15,19 +16,23 @@ bool isDebugMode() {
 }
 
 final logger = Logger();
-final _sentry = SentryClient(SentryOptions(
-    dsn:
-        'https://a27d08e9edf5482c89aa076073be65b7@o1087080.ingest.sentry.io/6104827'));
+late SentryClient _sentry;
+final appConfigs = AppConfiguration.instance;
 
-void main() {
+Future<void> main() async {
   runZonedGuarded<Future<void>>(() async {
     WidgetsFlutterBinding.ensureInitialized();
+
+    // Always initialize appConfigs first
+    await appConfigs.initialize();
+
+    _sentry = SentryClient(SentryOptions(dsn: appConfigs.sentryDSN));
 
     // Handle Flutter Errors
     FlutterError.onError = (FlutterErrorDetails details) async {
       if (isDebugMode()) {
         // defaults to dump to console
-        // FlutterError.dumpErrorToConsole(details);
+        // FlutterError.dumpEr0rorToConsole(details);
 
         //or, use logger to dump pretty
         logger.e(details.toString(), details.exception, details.stack);

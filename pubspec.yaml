@@ -39,6 +39,9 @@ dependencies:
   sentry_flutter: ^6.2.2
   package_info: ^2.0.2
   device_info_plus: ^3.2.1
+  flutter_dotenv: ^5.0.2
+  freezed_annotation: ^1.1.0
+  json_annotation: ^4.4.0
 
 dev_dependencies:
   flutter_test:
@@ -50,6 +53,9 @@ dev_dependencies:
   # package. See that file for information about deactivating specific lint
   # rules and activating additional ones.
   flutter_lints: ^1.0.0
+  freezed: ^1.1.1
+  build_runner: ^2.1.7
+  json_serializable: ^6.1.4
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -67,6 +73,8 @@ flutter:
   #   - images/a_dot_burr.jpeg
   #   - images/a_dot_ham.jpeg
 
+  assets:
+    - .env
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware.
 
