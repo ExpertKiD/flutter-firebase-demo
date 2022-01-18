@@ -1,8 +1,10 @@
 import 'dart:async';
 
+import 'package:firebasedemo/utils/sesntry_event.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:logger/logger.dart';
+import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'apps/app.dart';
 
@@ -13,6 +15,9 @@ bool isDebugMode() {
 }
 
 final _logger = Logger();
+final _sentry = SentryClient(SentryOptions(
+    dsn:
+        'https://a27d08e9edf5482c89aa076073be65b7@o1087080.ingest.sentry.io/6104827'));
 
 void main() {
   runZonedGuarded<Future<void>>(() async {
@@ -38,12 +43,16 @@ void main() {
       }
     };
 
+    // run the app
     runApp(const FirebaseDemoApp());
   }, (error, stack) async {
     if (isDebugMode()) {
       _logger.e("Caught Dart Error!", error, stack);
     } else {
       _logger.d("Time to report to error tracking system in production");
+      final SentryEvent event = await getSentryEnvEvent(error);
+
+      _sentry.captureEvent(event, stackTrace: stack);
     }
   });
 }
