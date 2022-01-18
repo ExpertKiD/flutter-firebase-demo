@@ -1,5 +1,6 @@
 import 'dart:async';
 
+import 'package:firebase_core/firebase_core.dart';
 import 'package:firebasedemo/utils/app_configs.dart';
 import 'package:firebasedemo/utils/sentry_event.dart';
 import 'package:flutter/foundation.dart';
@@ -8,6 +9,7 @@ import 'package:logger/logger.dart';
 import 'package:sentry_flutter/sentry_flutter.dart';
 
 import 'apps/app.dart';
+import 'firebase_options.dart';
 
 bool isDebugMode() {
   bool isInDebugMode = !kReleaseMode;
@@ -27,6 +29,10 @@ Future<void> main() async {
     await appConfigs.initialize();
 
     _sentry = SentryClient(SentryOptions(dsn: appConfigs.sentryDSN));
+
+    // init firebase app
+    await Firebase.initializeApp(
+        options: DefaultFirebaseOptions.currentPlatform);
 
     // Handle Flutter Errors
     FlutterError.onError = (FlutterErrorDetails details) async {
