@@ -1,6 +1,8 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 class AppConfiguration {
+  static final AppConfiguration instance = AppConfiguration._();
+
   /// region firebase configuration
 
   /// region firebase configuration android
@@ -31,7 +33,7 @@ class AppConfiguration {
 
   bool get isInitialized => _isInitialized;
 
-  AppConfiguration();
+  AppConfiguration._();
 
   /// Initialize the application configs
   Future<void> initialize() async {
