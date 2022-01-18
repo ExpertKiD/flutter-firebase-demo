@@ -1,5 +1,9 @@
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+import 'package:freezed_annotation/freezed_annotation.dart';
 
+part 'app_configs.g.dart';
+
+@JsonSerializable()
 class AppConfiguration {
   static final AppConfiguration instance = AppConfiguration._();
 
@@ -34,6 +38,16 @@ class AppConfiguration {
   bool get isInitialized => _isInitialized;
 
   AppConfiguration._();
+
+  factory AppConfiguration() {
+    return instance;
+  }
+
+  factory AppConfiguration.fromJson(Map<String, dynamic> json) =>
+      _$AppConfigurationFromJson(json);
+
+  /// Connect the generated [_$PersonToJson] function to the `toJson` method.
+  Map<String, dynamic> toJson() => _$AppConfigurationToJson(this);
 
   /// Initialize the application configs
   Future<void> initialize() async {
